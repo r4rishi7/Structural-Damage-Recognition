@@ -22,17 +22,13 @@ ENV/
 # ================================
 # Large Dataset Files
 # ================================
-DATA/**/*.npy
-DATA/**/*.npz
-DATA/**/*.zip
-DATA/**/*.tar
-DATA/**/*.gz
+data/
+*.npy
+*.npz
+*.zip
+*.tar
+*.gz
 
-# ================================
-# Dataset directories
-# ================================
-DATA/task2_damage_state_1/
-DATA/task2_damage_state_2/
 
 # ================================
 # Trained Models / Checkpoints
