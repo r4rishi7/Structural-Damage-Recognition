@@ -108,17 +108,6 @@ def create_generators(
 ):
     """
     Create training, validation, and test generators.
-
-    Returns
-    -------
-    train_generator
-        Training data generator.
-
-    validation_generator
-        Validation data generator.
-
-    test_generator
-        Test data generator.
     """
 
     from sklearn.model_selection import train_test_split
@@ -189,9 +178,11 @@ def create_generators(
 
 if __name__ == "__main__":
 
-    train_generator, validation_generator, test_generator = (
-        create_generators()
-    )
+    (
+        train_generator,
+        validation_generator,
+        test_generator,
+    ) = create_generators()
 
     print("Train batches:", len(train_generator))
     print("Validation batches:", len(validation_generator))
