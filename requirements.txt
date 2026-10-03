@@ -6,3 +6,4 @@ scikit-learn
 jupyter
 opencv-python
 Pillow
+tensorflow==2.21.0
