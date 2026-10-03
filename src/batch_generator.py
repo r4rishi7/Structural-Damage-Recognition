@@ -20,43 +20,62 @@ TRAIN_Y_PATH = (
     / "task2_y_train.npy"
 )
 
+TEST_X_PATH = (
+    PROJECT_ROOT
+    / "data"
+    / "task2_damage_state_1"
+    / "task2_X_test.npy"
+)
+
+TEST_Y_PATH = (
+    PROJECT_ROOT
+    / "data"
+    / "task2_damage_state_1"
+    / "task2_y_test.npy"
+)
+
 
 class DamageDataGenerator(Sequence):
     """
-    Memory-efficient batch generator for the structural damage dataset.
+    Memory-efficient generator for NumPy image datasets.
 
-    Images remain memory-mapped on disk and are loaded only when a batch
-    is requested.
+    Images are memory-mapped and loaded only batch-by-batch.
     """
 
     def __init__(
         self,
-        indices,
+        X,
+        y,
+        indices=None,
         batch_size=32,
-        shuffle=True,
+        shuffle=False,
     ):
-        self.indices = np.asarray(indices)
+        self.X = X
+        self.y = y
         self.batch_size = batch_size
         self.shuffle = shuffle
 
-        self.X = np.load(
-            TRAIN_X_PATH,
-            mmap_mode="r",
-        )
-
-        self.y = np.load(TRAIN_Y_PATH)
+        if indices is None:
+            self.indices = np.arange(len(y))
+        else:
+            self.indices = np.asarray(indices)
 
         self.current_indices = self.indices.copy()
 
         self.on_epoch_end()
 
     def __len__(self):
-        """Number of batches per epoch."""
-        return int(np.ceil(len(self.current_indices) / self.batch_size))
+        """Return the number of batches."""
+        return int(
+            np.ceil(
+                len(self.current_indices) / self.batch_size
+            )
+        )
 
     def __getitem__(self, index):
-        """Return one batch."""
+        """Return one batch of images and labels."""
         start = index * self.batch_size
+
         end = min(
             start + self.batch_size,
             len(self.current_indices),
@@ -77,34 +96,121 @@ class DamageDataGenerator(Sequence):
         return X_batch, y_batch
 
     def on_epoch_end(self):
-        """Shuffle indices after every epoch."""
+        """Shuffle training indices after each epoch."""
         if self.shuffle:
             np.random.shuffle(self.current_indices)
 
 
-if __name__ == "__main__":
-    from data_loader import (
-        load_training_arrays,
-        get_train_validation_indices,
+def create_generators(
+    validation_size=0.1,
+    batch_size=32,
+    random_state=42,
+):
+    """
+    Create training, validation, and test generators.
+
+    Returns
+    -------
+    train_generator
+        Training data generator.
+
+    validation_generator
+        Validation data generator.
+
+    test_generator
+        Test data generator.
+    """
+
+    from sklearn.model_selection import train_test_split
+
+    X_train = np.load(
+        TRAIN_X_PATH,
+        mmap_mode="r",
     )
 
-    X_train, y_train = load_training_arrays()
-
-    train_indices, validation_indices = (
-        get_train_validation_indices(y_train)
+    y_train = np.load(
+        TRAIN_Y_PATH,
     )
 
-    generator = DamageDataGenerator(
-        train_indices,
-        batch_size=32,
+    X_test = np.load(
+        TEST_X_PATH,
+        mmap_mode="r",
+    )
+
+    y_test = np.load(
+        TEST_Y_PATH,
+    )
+
+    # Convert one-hot labels to integer labels
+    # only for stratified splitting.
+    labels = np.argmax(y_train, axis=1)
+
+    all_indices = np.arange(len(y_train))
+
+    train_indices, validation_indices = train_test_split(
+        all_indices,
+        test_size=validation_size,
+        random_state=random_state,
+        stratify=labels,
+    )
+
+    train_generator = DamageDataGenerator(
+        X_train,
+        y_train,
+        indices=train_indices,
+        batch_size=batch_size,
         shuffle=True,
     )
 
-    print("Number of batches:", len(generator))
+    validation_generator = DamageDataGenerator(
+        X_train,
+        y_train,
+        indices=validation_indices,
+        batch_size=batch_size,
+        shuffle=False,
+    )
 
-    X_batch, y_batch = generator[0]
+    test_indices = np.arange(len(y_test))
 
-    print("Batch images:", X_batch.shape)
-    print("Batch labels:", y_batch.shape)
-    print("Image dtype:", X_batch.dtype)
-    print("Label dtype:", y_batch.dtype)
+    test_generator = DamageDataGenerator(
+        X_test,
+        y_test,
+        indices=test_indices,
+        batch_size=batch_size,
+        shuffle=False,
+    )
+
+    return (
+        train_generator,
+        validation_generator,
+        test_generator,
+    )
+
+
+if __name__ == "__main__":
+
+    train_generator, validation_generator, test_generator = (
+        create_generators()
+    )
+
+    print("Train batches:", len(train_generator))
+    print("Validation batches:", len(validation_generator))
+    print("Test batches:", len(test_generator))
+
+    X_train_batch, y_train_batch = train_generator[0]
+
+    X_val_batch, y_val_batch = validation_generator[0]
+
+    X_test_batch, y_test_batch = test_generator[0]
+
+    print("\nTraining batch:")
+    print("Images:", X_train_batch.shape)
+    print("Labels:", y_train_batch.shape)
+
+    print("\nValidation batch:")
+    print("Images:", X_val_batch.shape)
+    print("Labels:", y_val_batch.shape)
+
+    print("\nTest batch:")
+    print("Images:", X_test_batch.shape)
+    print("Labels:", y_test_batch.shape)
