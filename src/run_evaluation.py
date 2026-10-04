@@ -3,8 +3,8 @@ from pathlib import Path
 import numpy as np
 import tensorflow as tf
 
-from batch_generator import create_generators
-from evaluate import evaluate_model
+from src.batch_generator import create_generators
+from src.evaluate import evaluate_model
 
 
 MODEL_PATH = Path("models/inceptionv3.keras")
