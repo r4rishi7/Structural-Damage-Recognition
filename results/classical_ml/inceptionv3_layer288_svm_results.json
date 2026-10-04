@@ -1,0 +1,77 @@
+{
+  "model": "InceptionV3 Layer 288 + RBF-SVM",
+  "feature_layer": 288,
+  "feature_layer_name": "activation_90",
+  "feature_shape": [
+    5,
+    5,
+    384
+  ],
+  "flattened_features": 9600,
+  "kernel": "rbf",
+  "C": 1.0,
+  "gamma": 0.001,
+  "train_samples": 10629,
+  "validation_samples": 1182,
+  "test_samples": 1460,
+  "training_time_seconds": 1352.886153936386,
+  "validation": {
+    "accuracy": 0.5998307952622673,
+    "precision": 0.5738007380073801,
+    "recall": 0.5623869801084991,
+    "f1": 0.5680365296803653,
+    "confusion_matrix": [
+      [
+        398,
+        231
+      ],
+      [
+        242,
+        311
+      ]
+    ]
+  },
+  "test": {
+    "accuracy": 0.5958904109589042,
+    "precision": 0.5871687587168759,
+    "recall": 0.5888111888111888,
+    "f1": 0.5879888268156425,
+    "confusion_matrix": [
+      [
+        449,
+        296
+      ],
+      [
+        294,
+        421
+      ]
+    ],
+    "classification_report": {
+      "0": {
+        "precision": 0.604306864064603,
+        "recall": 0.6026845637583893,
+        "f1-score": 0.603494623655914,
+        "support": 745.0
+      },
+      "1": {
+        "precision": 0.5871687587168759,
+        "recall": 0.5888111888111888,
+        "f1-score": 0.5879888268156425,
+        "support": 715.0
+      },
+      "accuracy": 0.5958904109589042,
+      "macro avg": {
+        "precision": 0.5957378113907394,
+        "recall": 0.595747876284789,
+        "f1-score": 0.5957417252357782,
+        "support": 1460.0
+      },
+      "weighted avg": {
+        "precision": 0.5959138878155449,
+        "recall": 0.5958904109589042,
+        "f1-score": 0.5959010313676988,
+        "support": 1460.0
+      }
+    }
+  }
+}
