@@ -39,3 +39,31 @@ def build_inceptionv3(input_shape=(224, 224, 3), num_classes=2):
     )
 
     return model
+
+def build_mobilenetv1(input_shape=(224, 224, 3), num_classes=2):
+    base_model = tf.keras.applications.MobileNet(
+        weights="imagenet",
+        include_top=False,
+        input_shape=input_shape
+    )
+
+    base_model.trainable = False
+
+    x = base_model.output
+    x = tf.keras.layers.GlobalAveragePooling2D()(x)
+    x = tf.keras.layers.Dense(256, activation="relu")(x)
+    x = tf.keras.layers.Dropout(0.5)(x)
+    output = tf.keras.layers.Dense(num_classes, activation="softmax")(x)
+
+    model = tf.keras.models.Model(
+        inputs=base_model.input,
+        outputs=output
+    )
+
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+        loss="categorical_crossentropy",
+        metrics=["accuracy"]
+    )
+
+    return model
