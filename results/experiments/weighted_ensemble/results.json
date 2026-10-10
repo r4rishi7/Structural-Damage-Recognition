@@ -1,0 +1,79 @@
+{
+    "model": "MobileNetV1 + InceptionV3 weighted ensemble",
+    "mobilenet_weight": 0.8,
+    "inception_weight": 0.2,
+    "validation_accuracy": 0.7859560067681896,
+    "accuracy": 0.773972602739726,
+    "precision": 0.7549668874172185,
+    "recall": 0.7972027972027972,
+    "f1": 0.7755102040816326,
+    "confusion_matrix": [
+        [
+            560,
+            185
+        ],
+        [
+            145,
+            570
+        ]
+    ],
+    "elapsed_seconds": 93.3695541000925,
+    "random_state": 42,
+    "weight_search": [
+        {
+            "mobilenet_weight": 0.0,
+            "inception_weight": 1.0,
+            "validation_accuracy": 0.6624365482233503
+        },
+        {
+            "mobilenet_weight": 0.1,
+            "inception_weight": 0.9,
+            "validation_accuracy": 0.6954314720812182
+        },
+        {
+            "mobilenet_weight": 0.2,
+            "inception_weight": 0.8,
+            "validation_accuracy": 0.7148900169204738
+        },
+        {
+            "mobilenet_weight": 0.3,
+            "inception_weight": 0.7,
+            "validation_accuracy": 0.739424703891709
+        },
+        {
+            "mobilenet_weight": 0.4,
+            "inception_weight": 0.6,
+            "validation_accuracy": 0.7470389170896785
+        },
+        {
+            "mobilenet_weight": 0.5,
+            "inception_weight": 0.5,
+            "validation_accuracy": 0.7656514382402707
+        },
+        {
+            "mobilenet_weight": 0.6,
+            "inception_weight": 0.4,
+            "validation_accuracy": 0.7774957698815567
+        },
+        {
+            "mobilenet_weight": 0.7,
+            "inception_weight": 0.3,
+            "validation_accuracy": 0.7834179357021996
+        },
+        {
+            "mobilenet_weight": 0.8,
+            "inception_weight": 0.2,
+            "validation_accuracy": 0.7859560067681896
+        },
+        {
+            "mobilenet_weight": 0.9,
+            "inception_weight": 0.1,
+            "validation_accuracy": 0.7817258883248731
+        },
+        {
+            "mobilenet_weight": 1.0,
+            "inception_weight": 0.0,
+            "validation_accuracy": 0.7817258883248731
+        }
+    ]
+}
