@@ -464,6 +464,53 @@ All models are evaluated on the same held-out test set.
 
 ---
 
+# Additional Experiments (4�6)
+
+These experiments extend the original six-model baseline. All test results use the same held-out test set of 1,460 images (745 damaged and 715 undamaged). Precision, recall, and F1-score refer to the Undamaged class (label 1).
+
+| Experiment | Test Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| 4. EfficientNetB0 Transfer Learning | 87.26% | 86.99% | 86.99% | 86.99% |
+| 5. EfficientNetB0 Fine-Tuning | 87.26% | 87.95% | 85.73% | 86.83% |
+| 6. MobileNetV1 + InceptionV3 Weighted Ensemble | 77.40% | 75.50% | 79.72% | 77.55% |
+
+## Experiment 4: EfficientNetB0 Transfer Learning
+
+An ImageNet-pretrained EfficientNetB0 backbone was frozen while a classification head was trained. Existing Caffe-style BGR preprocessing was reversed to restore RGB input. Training used a learning rate of 0.0001, batch size 8, and random seed 42. Training completed 7 epochs.
+
+- Best validation accuracy: 85.62%
+- Test accuracy: 87.26%
+- Confusion matrix: [[652, 93], [93, 622]]
+- Results: results/experiments/efficientnetb0/results.json
+- Script: src/train_efficientnet.py
+
+## Experiment 5: EfficientNetB0 Fine-Tuning
+
+Starting from the Experiment 4 checkpoint, the final 16 backbone layers were considered for fine-tuning, with BatchNormalization layers kept frozen. Training used a learning rate of 0.00001, batch size 8, and 5 epochs.
+
+- Best validation accuracy: 86.29%
+- Test accuracy: 87.26%
+- Confusion matrix: [[661, 84], [102, 613]]
+- Results: results/experiments/efficientnetb0_finetune/results.json
+- Script: src/train_efficientnet_finetune.py
+
+## Experiment 6: Weighted Probability Ensemble
+
+MobileNetV1 and InceptionV3 predicted class probabilities were combined using a weighted average. Eleven candidate weight combinations were evaluated on the validation set only, avoiding test-set selection bias. The best combination assigned 80% weight to MobileNetV1 and 20% to InceptionV3.
+
+- Validation accuracy: 78.60%
+- Test accuracy: 77.40%
+- Confusion matrix: [[560, 185], [145, 570]]
+- Results: results/experiments/weighted_ensemble/results.json
+- Script: src/evaluate_weighted_ensemble.py
+
+## Findings from the Additional Experiments
+
+EfficientNetB0 achieved the highest test accuracy of 87.26%, improving by 10.48 percentage points over the original MobileNetV1 baseline (76.78%). Fine-tuning matched the initial EfficientNetB0 accuracy but changed the precision-recall balance. The weighted ensemble reached 77.40%, a smaller improvement over the original MobileNetV1 baseline.
+
+The original six-model comparison and its Best Model section below remain historical baseline results.
+
+---
 # Best Model
 
 MobileNetV1 achieved the strongest overall test performance.
