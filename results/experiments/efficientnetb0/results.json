@@ -1,0 +1,27 @@
+{
+    "model": "EfficientNetB0",
+    "baseline_accuracy": 0.76780822,
+    "accuracy": 0.8726027397260274,
+    "precision": 0.8699300699300699,
+    "recall": 0.8699300699300699,
+    "f1": 0.8699300699300699,
+    "confusion_matrix": [
+        [
+            652,
+            93
+        ],
+        [
+            93,
+            622
+        ]
+    ],
+    "best_validation_accuracy": 0.85617595911026,
+    "training_seconds": 1585.7229220997542,
+    "batch_size": 8,
+    "epochs_requested": 10,
+    "epochs_completed": 7,
+    "learning_rate": 0.0001,
+    "random_state": 42,
+    "backbone_frozen": true,
+    "preprocessing": "Caffe BGR mean reversal to RGB"
+}
