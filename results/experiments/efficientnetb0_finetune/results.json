@@ -1,0 +1,25 @@
+{
+    "model": "EfficientNetB0 fine-tuned",
+    "accuracy": 0.8726027397260274,
+    "precision": 0.8794835007173601,
+    "recall": 0.8573426573426574,
+    "f1": 0.8682719546742209,
+    "confusion_matrix": [
+        [
+            661,
+            84
+        ],
+        [
+            102,
+            613
+        ]
+    ],
+    "best_validation_accuracy": 0.8629441857337952,
+    "training_seconds": 1188.4065217999741,
+    "epochs_completed": 5,
+    "batch_size": 8,
+    "learning_rate": 1e-05,
+    "unfrozen_backbone_layers": 16,
+    "random_state": 42,
+    "starting_checkpoint": "models/efficientnetb0.keras"
+}
